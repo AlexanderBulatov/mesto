@@ -1,0 +1,22 @@
+.sections__intro {
+  margin: 0 auto;
+  width: calc(100% - 148px*2);
+}
+
+@media screen and (max-width: 1100px)  {
+  .sections__intro {
+    width: calc(100% - 48px*2);
+  }
+}
+
+@media screen and (max-width: 850px) {
+  .sections__intro {
+    width: calc(100% - 24px*2);
+  }
+}
+
+@media screen and (max-width: 425px) {
+  .sections__intro {
+    width: calc(100% - 16px*2);
+  }
+}
