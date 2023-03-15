@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="ru">
+
 <head>
   <meta charset="UTF-8">
   <link rel="stylesheet" href="./pages/index.css">
@@ -9,24 +10,83 @@
   <meta name="author" content="Alexander Bulatov">
   <title>Mesto</title>
 </head>
+
 <body class="body">
   <div class="page body__content">
-    <header class="header page__header">
 
+    <header class="header page__header">
+      <img src="./images/logo.svg" alt="Слово МЕСТО написано латинскими буквами" class="logo header__logo">
     </header>
 
-    <main class="sections page__sections">
+    <main class="container page__container">
 
-      <section class="lead sections__lead">
-
+      <section class="profile container__profile">
+        <img src="./images/JIKusto.jpg" alt="фотография-аватар Жак-Ива Кусто" class="profile__foto">
+        <div class="profile__info">
+          <h1 class="profile__name">Жак-Ив Кусто<button class="profile__edit"></button></h1>
+          <p class="profile__occupation">Исследователь океана</p>
+        </div>
+        <button class="profile__add-place"></button>
       </section>
 
+      <section class="elements container__elements">
+        <article class="element">
+          <img src="./images/kirill-pershin-1088404-unsplash.jpg" alt="фотография крепости в Карачаевске"
+            class="element__foto">
+          <div class="element__info">
+            <h2 class="element__name">Карачаевск</h2>
+            <button class="element__like element__like_type_disable"></button>
+          </div>
+        </article>
+        <article class="element">
+          <img src="./images/kirill-pershin-1088404-unsplash.jpg" alt="фотография крепости в Карачаевске"
+            class="element__foto">
+          <div class="element__info">
+            <h2 class="element__name">Карачаевск</h2>
+            <button class="element__like element__like_type_disable"></button>
+          </div>
+        </article>
+        <article class="element">
+          <img src="./images/kirill-pershin-1088404-unsplash.jpg" alt="фотография крепости в Карачаевске"
+            class="element__foto">
+          <div class="element__info">
+            <h2 class="element__name">Карачаевск</h2>
+            <button class="element__like element__like_type_disable"></button>
+          </div>
+        </article>
+        <article class="element">
+          <img src="./images/kirill-pershin-1088404-unsplash.jpg" alt="фотография крепости в Карачаевске"
+            class="element__foto">
+          <div class="element__info">
+            <h2 class="element__name">Карачаевск</h2>
+            <button class="element__like element__like_type_disable"></button>
+          </div>
+        </article>
+        <article class="element">
+          <img src="./images/kirill-pershin-1088404-unsplash.jpg" alt="фотография крепости в Карачаевске"
+            class="element__foto">
+          <div class="element__info">
+            <h2 class="element__name">Карачаевск</h2>
+            <button class="element__like element__like_type_disable"></button>
+          </div>
+        </article>
+        <article class="element">
+          <img src="./images/kirill-pershin-1088404-unsplash.jpg" alt="фотография крепости в Карачаевске"
+            class="element__foto">
+          <div class="element__info">
+            <h2 class="element__name">Карачаевск</h2>
+            <button class="element__like element__like_type_disable"></button>
+          </div>
+        </article>
+      </section>
 
     </main>
 
     <footer class="footer page__footer">
 
     </footer>
+
   </div>
 </body>
+
 </html>

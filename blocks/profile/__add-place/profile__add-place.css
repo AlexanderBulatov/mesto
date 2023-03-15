@@ -1,0 +1,13 @@
+.profile__add-place {
+    border: none;
+    width: 150px;
+    height: 50px;
+    background:url(../../../images/Add-Button.svg);
+    cursor: pointer;
+    transition: opacity 0.2s;
+    margin: auto 0 auto auto;
+  }
+  .profile__add-place:hover {
+    opacity: 0.6;
+  }
+

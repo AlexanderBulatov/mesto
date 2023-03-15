@@ -1,0 +1,4 @@
+.container__profile {
+  margin: 0 auto 50px;
+  width: calc(100% - 200px*2);
+}
