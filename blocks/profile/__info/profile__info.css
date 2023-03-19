@@ -1,6 +1,11 @@
 .profile__info {
-  margin-left: 30px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
+  max-width: calc(100% - (120px + 150px) - 30px*2);
+  margin: auto 0px auto 30px;
+}
+
+@media screen and (max-width: 850px)  {
+  .profile__info  {
+    max-width: calc(100%);
+    margin: 0 auto 33px auto;
+  }
 }

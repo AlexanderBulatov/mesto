@@ -1,0 +1,26 @@
+.popup-edit-profile__input {
+  width: 100%;
+  display: block;
+  border-style: none;
+  box-sizing: border-box;;
+  border-bottom: 1px solid rgba(0,0,0,.2);
+  color: #000;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 17px;
+  margin-bottom: 44px;
+  padding: 0 0 9px 0;
+}
+
+.popup-edit-profile__input:last-of-type{
+  margin-bottom: 0;
+}
+
+.popup-edit-profile__input::placeholder {
+  color: #545454;
+}
+@media screen and (max-width: 600px)  {
+  .popup-edit-profile__input {
+    margin-bottom: 30px;
+  }
+}

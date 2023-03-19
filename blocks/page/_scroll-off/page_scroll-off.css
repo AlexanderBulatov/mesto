@@ -1,0 +1,4 @@
+.page_scroll-off {
+  overflow: hidden;
+  height: 100vh;
+}

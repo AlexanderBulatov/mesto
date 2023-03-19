@@ -5,8 +5,8 @@
   padding: 0;
 }
 
-/* @media screen and (max-width: 425px) {
+@media screen and (max-width: 600px)  {
   .header__logo {
-    width: 142px;
+    width: 104px;
   }
-} */
+}

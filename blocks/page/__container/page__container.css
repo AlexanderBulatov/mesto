@@ -1,13 +1,26 @@
 .page__container {
-
+  width: calc(100% - 200px*2);
+  min-width: 720px;
+  margin: 0 auto;
 }
 
-@media screen and (max-width: 850px) {
-
-
+@media screen and (max-width: 850px)  {
+  .page__container  {
+    width: calc(100% - 150px*2);
+    min-width: 282px;
+    flex-direction: column;
+    align-items: center;
+  }
 }
 
-@media screen and (max-width: 425px) {
-
-
+@media screen and (max-width: 600px)  {
+  .page__container  {
+    margin: 28px auto 42px;
+  }
+}
+@media screen and (max-width: 320px)  {
+  .page__container  {
+    width: calc(100% - 19px*2);
+    min-width: 0px;
+  }
 }

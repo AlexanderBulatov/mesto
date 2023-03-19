@@ -6,8 +6,21 @@
     cursor: pointer;
     transition: opacity 0.2s;
     margin: auto 0 auto auto;
+    padding: 0;
+    flex-shrink: 0;
   }
   .profile__add-place:hover {
     opacity: 0.6;
+  }
+
+  @media screen and (max-width: 850px)  {
+    .profile__add-place  {
+      margin: 0 auto;
+      width: 100%;
+      border: 2px #fff solid;
+      background:url(../../../images/plus-button-element.svg);
+      background-repeat: no-repeat;
+      background-position: center;
+    }
   }
 

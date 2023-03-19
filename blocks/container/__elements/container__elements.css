@@ -1,6 +1,4 @@
 .container__elements {
-  margin: 0 auto;
-  width: calc(100% - 200px*2);
   column-gap: 17px;
   row-gap: 20px;
 }
