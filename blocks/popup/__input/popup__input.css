@@ -1,4 +1,4 @@
-.popup-edit-profile__input {
+.popup__input {
   width: 100%;
   display: block;
   border-style: none;
@@ -8,19 +8,19 @@
   font-weight: 400;
   font-size: 14px;
   line-height: 17px;
-  margin-bottom: 44px;
+  margin-bottom: 30px;
   padding: 0 0 9px 0;
 }
 
-.popup-edit-profile__input:last-of-type{
+.popup__input:last-of-type{
   margin-bottom: 0;
 }
 
-.popup-edit-profile__input::placeholder {
+.popup__input::placeholder {
   color: #545454;
 }
 @media screen and (max-width: 600px)  {
-  .popup-edit-profile__input {
+  .popup__input {
     margin-bottom: 30px;
   }
 }

@@ -2,7 +2,11 @@
     border: none;
     width: 150px;
     height: 50px;
-    background:url(../../../images/Add-Button.svg);
+    border: 2px #fff solid;
+    background:url(../../../images/plus-button-element.svg);
+    background-repeat: no-repeat;
+    background-position: center;
+    border-radius: 2px;
     cursor: pointer;
     transition: opacity 0.2s;
     margin: auto 0 auto auto;
@@ -17,10 +21,6 @@
     .profile__add-place  {
       margin: 0 auto;
       width: 100%;
-      border: 2px #fff solid;
-      background:url(../../../images/plus-button-element.svg);
-      background-repeat: no-repeat;
-      background-position: center;
     }
   }
 

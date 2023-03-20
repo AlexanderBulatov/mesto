@@ -26,11 +26,11 @@
         <div class="profile__info">
           <div class="profile__name-area">
             <h1 class="profile__name">Жак-Ив Кусто</h1>
-            <button class="profile__edit"></button>
+            <button class="profile__edit" type="button"></button>
           </div>
           <p class="profile__occupation">Исследователь океана</p>
         </div>
-        <button class="profile__add-place"></button>
+        <button class="profile__add-place" type="button"></button>
       </section>
 
       <section class="elements container__elements">
@@ -39,7 +39,7 @@
             class="element__foto">
           <div class="element__info">
             <h2 class="element__name">Карачаевск</h2>
-            <button class="element__like"></button>
+            <button class="element__like" type="button"></button>
           </div>
         </article>
         <article class="element">
@@ -90,17 +90,18 @@
       <p class="footer__copyright">&copy; 2023 Alexander B</p>
     </footer>
   </div>
-  <div class="popup body__popup">
+
+  <div class="popup">
     <div class="popup__container">
-      <form class="popup-edit-profile popup__form">
-        <h3 class="popup-edit-profile__title">Редактировать профиль</h3>
-        <fieldset class="popup-edit-profile__profile-data">
-          <input type="text" placeholder="Введите имя" class="popup-edit-profile__input popup-edit-profile__input_type_name">
-          <input type="text" placeholder="Введите род занятий" class="popup-edit-profile__input popup-edit-profile__input_type_occupation">
+      <h2 class="popup__title">Редактировать профиль</h2>
+      <form class="popup__form">
+        <fieldset class="popup__profile-data">
+          <input type="text" name="profile-name" placeholder="Введите имя" class="popup__input popup__input_type_name">
+          <input type="text" name="profile-occupation" placeholder="Введите род занятий" class="popup__input popup__input_type_occupation">
         </fieldset>
-        <button type="submit" class="popup-edit-profile__submit-btn">Сохранить</button>
+        <button type="submit" class="popup__submit-btn">Сохранить</button>
       </form>
-      <button class="popup-close-btn popup__close"></button>
+      <button class="popup__close" type="submit"></button>
     </div>
   </div>
 </body>
