@@ -7,16 +7,11 @@
   width: calc(100% - 36px*2);
 }
 
-@media screen and (max-width: 770px)  {
+@media screen and (max-width: 650px)  {
   .popup__title  {
+    margin: 25px auto 74px;
     font-size: 18px;
     line-height: 22px;
     width: calc(100% - 22px*2);
-  }
-}
-
-@media screen and (max-width: 600px)  {
-  .popup__title  {
-    margin: 25px auto 74px;
   }
 }

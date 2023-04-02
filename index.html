@@ -14,14 +14,12 @@
 
 <body class="body">
   <div class="page body__content">
-
     <header class="header page__header">
       <img src="./images/logo.svg" alt="Слово МЕСТО написано латинскими буквами" class="logo header__logo">
     </header>
 
-    <main class="container page__container">
-
-      <section class="profile container__profile">
+    <main class="page__main">
+      <section class="profile">
         <img src="./images/JIKusto.jpg" alt="фотография-аватар Жак-Ива Кусто" class="profile__foto">
         <div class="profile__info">
           <div class="profile__name-area">
@@ -33,69 +31,35 @@
         <button class="profile__add-place" type="button"></button>
       </section>
 
-      <section class="elements container__elements">
-        <article class="element">
-          <img src="./images/kirill-pershin-karachaevsk-unsplash.jpg" alt="Небольшая каменная крепость на фоне гор"
-            class="element__foto">
-          <div class="element__info">
-            <h2 class="element__name">Карачаевск</h2>
-            <button class="element__like" type="button"></button>
-          </div>
-        </article>
-        <article class="element">
-          <img src="./images/kirill-pershin-elbrus-unsplash.jpg" alt="Абрис горы вдали на фоне заката"
-            class="element__foto">
-          <div class="element__info">
-            <h2 class="element__name">Гора Эльбрус</h2>
-            <button class="element__like "></button>
-          </div>
-        </article>
-        <article class="element">
-          <img src="./images/kirill-pershin-dombay-unsplash.jpg" alt="Заснеженные и лесистые горы"
-            class="element__foto">
-          <div class="element__info">
-            <h2 class="element__name">Домбай</h2>
-            <button class="element__like"></button>
-          </div>
-        </article>
-        <article class="element">
-          <img src="./images/kirill-pershin-elbrus-unsplash.jpg" alt="Абрис горы вдали на фоне заката"
-            class="element__foto">
-          <div class="element__info">
-            <h2 class="element__name">Гора Эльбрус</h2>
-            <button class="element__like"></button>
-          </div>
-        </article>
-        <article class="element">
-          <img src="./images/kirill-pershin-dombay-unsplash.jpg" alt="Заснеженные и лесистые горы"
-            class="element__foto">
-          <div class="element__info">
-            <h2 class="element__name">Домбай</h2>
-            <button class="element__like"></button>
-          </div>
-        </article>
-        <article class="element">
-          <img src="./images/kirill-pershin-karachaevsk-unsplash.jpg" alt="Небольшая каменная крепость на фоне гор"
-            class="element__foto">
-          <div class="element__info">
-            <h2 class="element__name">Карачаево-Черкесия</h2>
-            <button class="element__like"></button>
-          </div>
-        </article>
+      <section class="elements">
       </section>
-
     </main>
 
     <footer class="footer page__footer">
       <p class="footer__copyright">&copy; 2023 Alexander B</p>
     </footer>
+
   </div>
 
-  <div class="popup">
+  <div class="popup popup_type_add-picture">
+    <div class="popup__container">
+      <h2 class="popup__title">Новое место</h2>
+      <form class="popup__form" name="add-picture">
+        <fieldset class="popup__data">
+          <input type="text" name="picture-caption" placeholder="Название" class="popup__input popup__input_type_caption">
+          <input type="text" name="picture-link" placeholder="Ссылка на картинку" class="popup__input popup__input_type_link">
+        </fieldset>
+        <button type="submit" class="popup__submit-btn">Сохранить</button>
+      </form>
+      <button class="popup__close" type="button"></button>
+    </div>
+  </div>
+
+  <div class="popup popup_type_profile">
     <div class="popup__container">
       <h2 class="popup__title">Редактировать профиль</h2>
       <form class="popup__form" name="profile-edit">
-        <fieldset class="popup__profile-data">
+        <fieldset class="popup__data">
           <input type="text" name="profile-name" placeholder="Введите имя" class="popup__input popup__input_type_name">
           <input type="text" name="profile-occupation" placeholder="Введите род занятий" class="popup__input popup__input_type_occupation">
         </fieldset>
@@ -104,5 +68,26 @@
       <button class="popup__close" type="button"></button>
     </div>
   </div>
+
+  <div class="popup popup_type_picture">
+    <div class="popup__zooming">
+      <img src="" alt="" class="popup__picture">
+      <h2 class="popup__picture-caption"></h2>
+      <button class="popup__close" type="button"></button>
+    </div>
+  </div>
+
+  <template class="template-element">
+    <article class="element">
+      <img src="" alt="" class="element__foto">
+      <div class="element__info">
+        <h2 class="element__name"></h2>
+        <button class="element__like" type="button"></button>
+      </div>
+      <button class="element__delete" type="button"></button>
+    </article>
+  </template>
+
+
 </body>
 </html>
