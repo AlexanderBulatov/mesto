@@ -11,7 +11,7 @@
   <title>Mesto</title>
   <script src = "./scripts/initial.js" type="module"></script>
   <script src = "./scripts/validation.js" defer></script>
-  <script src = "./scripts/index.js" defer type="module"></script>
+  <script src = "./scripts/index.js" type="module"></script>
 
 </head>
 
@@ -70,7 +70,7 @@
           <input id="name" type="text" name="profile-name" placeholder="Введите имя" class="popup__input popup__input_type_name" required minlength="2" maxlength="40">
           <span class="popup__error popup__error_type_name"></span>
 
-          <input id="occupation" type="text" name="profile-occupation" placeholder="Введите род занятий" class="popup__input popup__input_type_occupation" required minlength="2" minlength="200">
+          <input id="occupation" type="text" name="profile-occupation" placeholder="Введите род занятий" class="popup__input popup__input_type_occupation" required minlength="2" maxlength="200">
           <span class="popup__error popup__error_type_occupation"></span>
 
         </fieldset>
