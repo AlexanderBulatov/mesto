@@ -48,14 +48,14 @@
     <div class="popup__container">
       <h2 class="popup__title">Новое место</h2>
       <form class="popup__form" name="add-picture" novalidate>
-        <fieldset class="popup__data">
+
           <input id="caption" type="text" name="picture-caption" placeholder="Название" class="popup__input popup__input_type_caption" required minlength="2" maxlength="30">
           <span class="popup__error popup__error_type_caption">sdfsdfsfdd</span>
 
           <input id="link" type="url" name="picture-link" placeholder="Ссылка на картинку" class="popup__input popup__input_type_link" required>
           <span class="popup__error popup__error_type_link"></span>
 
-        </fieldset>
+
         <button type="submit" class="popup__submit-btn">Создать</button>
       </form>
       <button class="popup__close" type="button"></button>
@@ -66,14 +66,13 @@
     <div class="popup__container">
       <h2 class="popup__title">Редактировать профиль</h2>
       <form class="popup__form" name="profile-edit" novalidate>
-        <fieldset class="popup__data">
+
           <input id="name" type="text" name="profile-name" placeholder="Введите имя" class="popup__input popup__input_type_name" required minlength="2" maxlength="40">
           <span class="popup__error popup__error_type_name"></span>
 
           <input id="occupation" type="text" name="profile-occupation" placeholder="Введите род занятий" class="popup__input popup__input_type_occupation" required minlength="2" maxlength="200">
           <span class="popup__error popup__error_type_occupation"></span>
 
-        </fieldset>
         <button type="submit" class="popup__submit-btn">Сохранить</button>
       </form>
       <button class="popup__close" type="button"></button>

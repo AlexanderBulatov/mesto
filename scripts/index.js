@@ -91,7 +91,6 @@ const closeOnKeyEscape = (e) => {
 const openPopup = (popup) => {
   popup.classList.add('popup_opened');
   document.addEventListener('keydown',closeOnKeyEscape);
-
 }
 
 //======================== close popup window
@@ -107,7 +106,6 @@ const handleSubmitProfile = (e) => {
   profileName.textContent = popupInputName.value;
   profileOccupation.textContent = popupInputOccupation.value;
   closePopup(popupProfile);
-  e.target.reset();
 }
 
 const handleSubmitPlace = (e) => {
@@ -121,8 +119,16 @@ const handleSubmitPlace = (e) => {
   renderPlaceItem(createPlaceItem (placeData));
   closePopup(popupAddPlace);
   e.target.reset();
-
 }
+
+//======================== clear errors in popup's input
+const clearError = (form, validationConfig) => {
+  const formInputs = Array.from(form.querySelectorAll(validationConfig.inputSelector));
+  formInputs.forEach((input) => {
+    hideInputError(form, input,validationConfig);
+  });
+}
+
 
 //======================== Load page with some initial place Items
 initialCards.forEach((card) => {
@@ -133,7 +139,8 @@ initialCards.forEach((card) => {
 profileEditBttn.addEventListener('click',() => {
   popupInputName.value = profileName.textContent;
   popupInputOccupation.value = profileOccupation.textContent;
-  openPopup (popupProfile);
+  openPopup(popupProfile);
+  clearError(popupProfile, validationConfig);
   enableSubmitBttn(validationConfig.inactiveButtonClass, profileSubmitBttn);
 });
 

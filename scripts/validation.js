@@ -6,36 +6,32 @@ const validationConfig = {
   inputErrorClass: 'popup__input_error',                            //'popup__input_type_error',
   errorClass: 'popup__error_active'                                 //'popup__error_visible'
 }
-//---------------------- decorate inputs elements on validity state
-const decorateInputCorrect = (inputErrorClass, input) => {
-  input.classList.remove(inputErrorClass);
-}
-const decorateInputError = (inputErrorClass, input) => {
-  input.classList.add(inputErrorClass);
-}
-//---------------------- ON|OFF Error message under input element
-const showError = (errorClass, errorElement) => {
-  errorElement.classList.add(errorClass);
-}
-const hideError = (errorClass,errorElement) => {
-  errorElement.classList.remove( errorClass);
-}
-//---------------------- set Error Message
-const setErrorMessage = (errorElement, message) => {
-    errorElement.textContent = message;
+
+const getErrorElement = (form, input) => {
+  return form.querySelector(`.popup__error_type_${input.id}`);
 }
 //---------------------- set input decoration and error element message on|off
-const setInputStateValidity = (validationConfig, form, input) =>  {
-  const error = form.querySelector(`.popup__error_type_${input.id}`);
+
+const hideInputError = (form, input, validationConfig) => {
+  const errorElement = getErrorElement (form, input);
+  input.classList.remove(validationConfig.inputErrorClass);
+  errorElement.classList.remove(validationConfig.errorClass);
+  errorElement.textContent = '';
+};
+
+const showInputError = (form, input, errorMessage, validationConfig) => {
+  const errorElement = getErrorElement (form, input);
+  input.classList.add(validationConfig.inputErrorClass);
+  errorElement.classList.add(validationConfig.errorClass);
+  errorElement.textContent = errorMessage;
+};
+
+const isValid = (validationConfig, form, input) => {
   if (input.validity.valid) {
-      decorateInputCorrect(validationConfig.inputErrorClass, input);
-      hideError(validationConfig.errorClass, error);
-      setErrorMessage (error, '');
+      hideInputError(form, input, validationConfig);
   }
   else {
-      decorateInputError(validationConfig.inputErrorClass, input);
-      showError(validationConfig.errorClass, error);
-      setErrorMessage (error, input.validationMessage);
+      showInputError(form, input, input.validationMessage, validationConfig);
   }
 };
 //---------------------- do we have false input validity
@@ -45,32 +41,32 @@ const existInvalidInput = (formInputs) => {
   })
 };
 //---------------------- make bttn enable
-const enableSubmitBttn = (inactiveButtonClass, bttn) => {
-  bttn.classList.remove(inactiveButtonClass);
-  bttn.removeAttribute('disabled','');
+const enableSubmitBttn = (inactiveButtonClass, submitBttn) => {
+  submitBttn.classList.remove(inactiveButtonClass);
+  submitBttn.removeAttribute('disabled','');
 }
 //---------------------- make bttn disable
-const disableSubmitBttn = (inactiveButtonClass, bttn) => {
-  bttn.classList.add(inactiveButtonClass);
-  bttn.setAttribute('disabled','');
+const disableSubmitBttn = (inactiveButtonClass, submitBttn) => {
+  submitBttn.classList.add(inactiveButtonClass);
+  submitBttn.setAttribute('disabled','');
 }
 //---------------------- set enable|disable submit button
-const toggleBttnValidity = (validationConfig, formInputs, form) => {
-  const bttn = form.querySelector(validationConfig.submitButtonSelector);
+const toggleBttnValidity = (validationConfig, formInputs, submitBttn) => {
   if (existInvalidInput(formInputs)) {
-    disableSubmitBttn(validationConfig.inactiveButtonClass, bttn);
+    disableSubmitBttn(validationConfig.inactiveButtonClass, submitBttn);
   } else {
-    enableSubmitBttn(validationConfig.inactiveButtonClass, bttn);
+    enableSubmitBttn(validationConfig.inactiveButtonClass, submitBttn);
   }
 };
 //---------------------- one form validation
 const setFormInputsListener = (validationConfig, popupForm) => {
   const formInputs = Array.from(popupForm.querySelectorAll(validationConfig.inputSelector));
-  toggleBttnValidity(validationConfig, formInputs, popupForm);
+  const submitBttn = popupForm.querySelector(validationConfig.submitButtonSelector);
+  toggleBttnValidity(validationConfig, formInputs, submitBttn);
   formInputs.forEach((input) => {
     input.addEventListener('input', () => {
-      setInputStateValidity(validationConfig, popupForm, input);
-      toggleBttnValidity(validationConfig, formInputs, popupForm);
+      isValid(validationConfig, popupForm, input);
+      toggleBttnValidity(validationConfig, formInputs, submitBttn);
     });
   });
 };
