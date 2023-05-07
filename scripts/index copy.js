@@ -1,7 +1,4 @@
 import { initialCards } from './initial.js';
-import { validationConfig } from './validationConfig.js';
-import { Card } from './Card.js';
-import { FormValidator } from './FormValidator.js';
 
 //---------------------- profile popup overlay
 const popups = document.querySelectorAll('.popup');
@@ -13,8 +10,8 @@ const popupInputOccupation = document.querySelector('.popup__input_type_occupati
 const popupInputCaption = document.querySelector('.popup__input_type_caption');
 const popupInputLink = document.querySelector('.popup__input_type_link');
 //---------------------- picture popup elements
-export const popupPicture = document.querySelector('.popup__picture');
-export const popupPictureCaption = document.querySelector('.popup__picture-caption');
+const popupPicture = document.querySelector('.popup__picture');
+const popupPictureCaption = document.querySelector('.popup__picture-caption');
 
 //---------------------- profile titles
 const profileName = document.querySelector('.profile__name');
@@ -23,7 +20,7 @@ const profileOccupation = document.querySelector('.profile__occupation');
 //---------------------- popups windows
 const popupProfile = document.querySelector('.popup_type_profile');
 const popupAddPlace = document.querySelector('.popup_type_add-picture');
-export const popupZoomPicture = document.querySelector('.popup_type_picture');
+const popupZoomPicture = document.querySelector('.popup_type_picture');
 
 //---------------------- popups forms
 const profileForm = popupProfile.querySelector('.popup__form');
@@ -40,15 +37,46 @@ const popupCloseBttns = document.querySelectorAll('.popup__close');
 
 //---------------------- point for adding place Items in DOM
 const places = document.querySelector('.elements');
+//----------------------
+const placeTemplate = document.querySelector('.template-element').content;
+
+//======================== preparing Place Item - START
+const createPlaceItem = (placeData) => {
+    const placeItem = placeTemplate.querySelector('.element').cloneNode(true);
+    const placeCaption = placeItem.querySelector('.element__name');
+    const placePicture = placeItem.querySelector('.element__foto');
+
+    placeCaption.textContent = placeData.name;
+    placePicture.src = placeData.link;
+    placePicture.alt = placeData.name;
+
+    const likeBttn = placeItem.querySelector('.element__like');
+    const deleteBttn = placeItem.querySelector('.element__delete');
+    const zoomPicture = placeItem.querySelector('.element__foto');
+
+    const handleLike = () => {
+      likeBttn.classList.toggle('element__like_active');
+    };
+
+    const handleDelete = () => {
+      placeItem.remove();
+    };
+
+    const handleZoom = () => {
+      popupPicture.src = placePicture.src;
+      popupPictureCaption.textContent = placeCaption.textContent;
+      popupPicture.alt = placeData.name;
+      openPopup (popupZoomPicture);
+    };
+
+    likeBttn.addEventListener('click', handleLike);
+    deleteBttn.addEventListener('click', handleDelete);
+    zoomPicture.addEventListener('click', handleZoom);
+
+    return placeItem;
+} //======================== preparing Place Item - END
 
 //======================== show Place Item with data
-
-const addCard = (placeData, templateSelector) => {
-  const card = new Card(placeData, templateSelector);
-  const cardElement = card.generateCard();
-  renderPlaceItem(cardElement);
-}
-
 const renderPlaceItem = (placeItem) => {
   places.prepend(placeItem);
 }
@@ -60,7 +88,7 @@ const closeOnKeyEscape = (e) => {
   }
 }
 //======================== open popup window
-export const openPopup = (popup) => {
+const openPopup = (popup) => {
   popup.classList.add('popup_opened');
   document.addEventListener('keydown',closeOnKeyEscape);
 }
@@ -88,35 +116,37 @@ const handleSubmitPlace = (e) => {
     name: placeCaption,
     link: placeLink
   };
-  addCard(placeData, '.template-element');
+  renderPlaceItem(createPlaceItem (placeData));
   closePopup(popupAddPlace);
   e.target.reset();
 }
 
-initialCards.forEach((item) => {
-  addCard(item, '.template-element');
+//======================== clear errors in popup's input
+const clearError = (form, validationConfig) => {
+  const formInputs = Array.from(form.querySelectorAll(validationConfig.inputSelector));
+  formInputs.forEach((input) => {
+    hideInputError(form, input,validationConfig);
+  });
+}
+
+
+//======================== Load page with some initial place Items
+initialCards.forEach((card) => {
+  renderPlaceItem(createPlaceItem(card));
 });
 
 //======================== Adding Listeners on Bttn
-const profileFormValidator = new FormValidator (validationConfig, profileForm);
-const addPlaceFormValidator = new FormValidator (validationConfig, addPlaceForm);
-profileFormValidator.enableValidation();
-addPlaceFormValidator.enableValidation();
-
-profileForm.addEventListener('submit', handleSubmitProfile);
-addPlaceForm.addEventListener('submit', handleSubmitPlace);
-
 profileEditBttn.addEventListener('click',() => {
   popupInputName.value = profileName.textContent;
   popupInputOccupation.value = profileOccupation.textContent;
   openPopup(popupProfile);
-  profileFormValidator.clearError(popupProfile); //-------------------------------
-  profileFormValidator.enableSubmitBttn(profileSubmitBttn);//===================
+  clearError(popupProfile, validationConfig);
+  enableSubmitBttn(validationConfig.inactiveButtonClass, profileSubmitBttn);
 });
 
 placeAddBttn.addEventListener('click',() => {
   openPopup (popupAddPlace);
-  addPlaceFormValidator.disableSubmitBttn(addPlaceSubmitBttn); //==================
+  disableSubmitBttn(validationConfig.inactiveButtonClass, addPlaceSubmitBttn);
 });
 
 popupCloseBttns.forEach( (bttn) => {
@@ -132,3 +162,7 @@ popups.forEach((popup) => {
     }
   });
 });
+
+
+profileForm.addEventListener('submit', handleSubmitProfile);
+addPlaceForm.addEventListener('submit', handleSubmitPlace);
