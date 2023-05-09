@@ -91,8 +91,8 @@ profileEditBttn.addEventListener('click',() => {
   popupInputName.value = profileName.textContent;
   popupInputOccupation.value = profileOccupation.textContent;
   openPopup(popupProfile);
-  profileFormValidator.clearError(popupProfile); //-------------------------------
-  profileFormValidator.enableSubmitBttn(profileSubmitBttn);//===================
+  profileFormValidator.clearError(); //-------------------------------
+  profileFormValidator.enableSubmitBttn();//===================
 });
 
 placeAddBttn.addEventListener('click',() => {
