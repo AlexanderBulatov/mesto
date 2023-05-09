@@ -1,4 +1,5 @@
-import { popupPicture, popupPictureCaption, popupZoomPicture, openPopup } from "./index.js";
+import { openPopup } from './utils/utils.js';
+import { popupPicture, popupPictureCaption, popupZoomPicture } from './utils/constants.js';
 export class Card {
   constructor(placeData, placeSelector) {
     this._placeSelector = placeSelector;

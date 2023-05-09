@@ -1,4 +1,5 @@
 # Mesto
+<image src="./images/JIKusto.jpg" alt="Ж-И Кусто">
 ***
 ## Проектная работа (HTML, CSS) - спринт 7 - "Mesto: валидация форм и попапы"
 ***

@@ -1,5 +1,5 @@
-import { initialCards } from './initial.js';
-import { validationConfig } from './validationConfig.js';
+import { initialCards, validationConfig } from './utils/constants.js';
+import { openPopup, closePopup } from './utils/utils.js';
 import { Card } from './Card.js';
 import { FormValidator } from './FormValidator.js';
 
@@ -13,8 +13,7 @@ const popupInputOccupation = document.querySelector('.popup__input_type_occupati
 const popupInputCaption = document.querySelector('.popup__input_type_caption');
 const popupInputLink = document.querySelector('.popup__input_type_link');
 //---------------------- picture popup elements
-export const popupPicture = document.querySelector('.popup__picture');
-export const popupPictureCaption = document.querySelector('.popup__picture-caption');
+
 
 //---------------------- profile titles
 const profileName = document.querySelector('.profile__name');
@@ -23,8 +22,6 @@ const profileOccupation = document.querySelector('.profile__occupation');
 //---------------------- popups windows
 const popupProfile = document.querySelector('.popup_type_profile');
 const popupAddPlace = document.querySelector('.popup_type_add-picture');
-export const popupZoomPicture = document.querySelector('.popup_type_picture');
-
 //---------------------- popups forms
 const profileForm = popupProfile.querySelector('.popup__form');
 const addPlaceForm = popupAddPlace.querySelector('.popup__form');
@@ -53,23 +50,7 @@ const renderPlaceItem = (placeItem) => {
   places.prepend(placeItem);
 }
 
-const closeOnKeyEscape = (e) => {
-  if (e.key === 'Escape') {
-    const openedPopup = document.querySelector('.popup_opened');
-    closePopup (openedPopup);
-  }
-}
 //======================== open popup window
-export const openPopup = (popup) => {
-  popup.classList.add('popup_opened');
-  document.addEventListener('keydown',closeOnKeyEscape);
-}
-
-//======================== close popup window
-const closePopup = (popup) => {
-  popup.classList.remove('popup_opened');
-  document.removeEventListener('keydown',closeOnKeyEscape);
-}
 
 //======================== Submit handles
 
