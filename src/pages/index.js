@@ -4,8 +4,7 @@ import { initialCards, validationConfig,
          popupInputOccupation,
          profileEditBttn,
          placeAddBttn,
-         profileFormSelector,
-         addPlaceFormSelector
+         formValidators
         } from '../scripts/utils/constants.js';
 import { Section } from '../scripts/components/Section.js';
 import { UserInfo } from '../scripts/components/UserInfo.js';
@@ -72,13 +71,17 @@ const handleCardClick = (placeData) => {
   });
 };
 
-const placeSectionRenderer = (item) => {
+const createCard = (item) =>{
   const card = new Card(
     item,
     '.template-element',
     handleCardClick
   );
-  const place = card.generateCard();
+  return card.generateCard();
+}
+
+const placeSectionRenderer = (item) => {
+  const place = createCard(item);
   placeList.addItem (place);
 }
 
@@ -96,28 +99,41 @@ placeList.renderItems();
 profileEditBttn.addEventListener (
   'click',
   () => {
-          popupInputName.value = userInfo.getUserInfo().name;
-          popupInputOccupation.value = userInfo.getUserInfo().occupation;
+          const { name, occupation } = userInfo.getUserInfo();
+          popupInputName.value = name;
+          popupInputOccupation.value = occupation;
           popupProfile.open();
-          profileFormValidator.clearError();
-          profileFormValidator.enableSubmitBttn();
+          formValidators['profile-edit'].clearError();
+          formValidators['profile-edit'].enableSubmitBttn();
         }
-
 );
 
 placeAddBttn.addEventListener (
   'click',
   () => {
-          addPlaceFormValidator.clearError();
+          formValidators['add-picture'].clearError();
+          formValidators['add-picture'].disableSubmitBttn();
           popupAddPlace.open();
         }
 
 );
+//===========================================================================
 
-const profileFormValidator = new FormValidator (validationConfig, profileFormSelector);
-const addPlaceFormValidator = new FormValidator (validationConfig, addPlaceFormSelector);
-profileFormValidator.enableValidation();
-addPlaceFormValidator.enableValidation();
+
+//-----------------Validation form On-------------------------
+const enableValidationForms = (config) => {
+  const formList = Array.from(document.querySelectorAll(config.formSelector))
+  formList.forEach((formElement) => {
+    const validator = new FormValidator(config, formElement)
+    const formName = formElement.getAttribute('name')
+    formValidators[formName] = validator;
+    validator.enableValidation();
+  });
+};
+
+enableValidationForms(validationConfig);
+//=====================================================================
+
 
 
 

@@ -34,14 +34,10 @@ export const validationConfig = {
   errorClass: 'popup__error_active'                                 //'popup__error_visible'
 }
 
+export const formValidators = {};
+
 export const popupInputName = document.querySelector('.popup__input_type_name');
 export const popupInputOccupation = document.querySelector('.popup__input_type_occupation');
-
-export const popupProfileSelector = document.querySelector('.popup_type_profile');
-export const popupAddPlaceSelector = document.querySelector('.popup_type_add-picture');
-
-export const profileFormSelector = popupProfileSelector.querySelector('.popup__form');
-export const addPlaceFormSelector = popupAddPlaceSelector.querySelector('.popup__form');
 
 export const profileEditBttn = document.querySelector('.profile__edit');
 export const placeAddBttn = document.querySelector('.profile__add-place');

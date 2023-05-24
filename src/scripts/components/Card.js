@@ -18,8 +18,8 @@ export class Card {
     this._deleteBttn = this._element.querySelector('.element__delete');
     this._picture = this._element.querySelector('.element__foto');
     this._element.querySelector('.element__name').textContent = this._name;
-    this._element.querySelector('.element__foto').src = this._link;
-    this._element.querySelector('.element__foto').alt = this._name;
+    this._picture.src = this._link;
+    this._picture.alt = this._name;
     this._setEventListeners();
     return this._element;
   }

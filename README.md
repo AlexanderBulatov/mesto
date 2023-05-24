@@ -1,5 +1,5 @@
 # Mesto
-<image src="./images/JIKusto.jpg" alt="Ж-И Кусто">
+<image src="./src/images/JIKusto.jpg" alt="Ж-И Кусто">
 
 ***
 ### Проектная работа (HTML, CSS) -  8 (спринт 9) - "Mesto: рефакторинг и сборка Вебпаком"

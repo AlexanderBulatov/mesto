@@ -6,7 +6,6 @@ export class PopupWithImage extends Popup {
     super(popupSelector);
     this._popupPicture = document.querySelector('.popup__picture');
     this._popupPictureCaption = document.querySelector('.popup__picture-caption');
-    this._popupZoomPicture = document.querySelector('.popup_type_picture');
 
   }
 
