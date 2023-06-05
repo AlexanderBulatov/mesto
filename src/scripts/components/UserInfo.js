@@ -1,8 +1,21 @@
 export class UserInfo {
-  constructor({userNameSelector, userOccupationSelector}){
+  constructor({userNameSelector, userOccupationSelector}, api){
     this._profileName = document.querySelector(userNameSelector);
     this._profileOccupation = document.querySelector(userOccupationSelector);
   }
+
+  // getUserInfo(){
+  //   this._api.getUserInfo()
+  //   .then((responseUserInfo) => {
+  //         const userInfo = {
+  //         name: responseUserInfo.name,
+  //         occupation: responseUserInfo.about
+  //       }
+  //       console.log(userInfo);
+  //       return userInfo;
+  //     }
+  //   );
+  // }
   getUserInfo(){
     const userInfo = {
       name: this._profileName.textContent,

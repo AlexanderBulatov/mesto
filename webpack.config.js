@@ -9,14 +9,15 @@ module.exports = {
     path: path.resolve(__dirname, 'dist'),
     filename: 'index.js',
         publicPath: ''
-  },
+    },
     mode: 'development',
-  devServer: {
-    static: path.resolve(__dirname, './dist'),
-    compress: true,
-    port: 8080,
-    open: true
-  },
+    devtool: 'eval-source-map',
+    devServer: {
+      static: path.resolve(__dirname, './dist'),
+      compress: true,
+      port: 8080,
+      open: true
+    },
   module: {
     rules: [ // rules — это массив правил
       // добавим в него объект правил для бабеля
@@ -33,6 +34,15 @@ module.exports = {
         test: /\.(png|svg|jpg|gif|woff(2)?|eot|ttf|otf)$/,
         type: 'asset/resource'
       },
+      {
+        // регулярное выражение, которое ищет все файлы с такими расширениями
+        test: /\.(woff(2)?|woff)$/,
+        type: 'asset/resource',
+        generator: {filename: 'fonts/[hash][ext]'}
+      },
+
+
+
       {
         // применять это правило только к CSS-файлам
         test: /\.css$/,
@@ -54,7 +64,9 @@ module.exports = {
       template: './src/index.html' // путь к файлу index.html
     }),
     new CleanWebpackPlugin(),
-    new MiniCssExtractPlugin() // подключение плагина для объединения файлов
+    new MiniCssExtractPlugin({
+      filename: 'index.css'
+    }) // подключение плагина для объединения файлов
   ]
 
 };

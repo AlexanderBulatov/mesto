@@ -1,5 +1,5 @@
 import '../pages/index.css';
-import { validationConfig,
+import { initialCards, validationConfig,
          popupInputName,
          popupInputOccupation,
          profileEditBttn,
@@ -15,14 +15,6 @@ import { Api } from '../scripts/components/Api.js';
 import { FormValidator } from '../scripts/utils/FormValidator.js';
 //===================================================================
 
-const api = new Api({
-  initUrlApi: 'https://mesto.nomoreparties.co/v1/cohort-68',
-  headers: {
-    authorization: '5852ae18-3c59-4495-8516-a5afb3a9d703',
-    'Content-Type': 'application/json'
-  }
-});
-
 //-----------------Zooming Cards (Image Popup)------------------------
 
 const imagePopup = new PopupWithImage (
@@ -32,24 +24,19 @@ imagePopup.setEventListeners();
 //===================================================================
 
 //-----------------Profile-------------------------
-const userInfo = new UserInfo ({
+const userInfo = new UserInfo (
+  {
     userNameSelector: '.profile__name',
     userOccupationSelector:'.profile__occupation'
   }
 );
-api.getUserInfo()
-  .then((userInfoServer)=>{
-    userInfo.setUserInfo(userInfoServer.name, userInfoServer.about);
-  });
-
 
 const handleProfileSubmit = (inputValues) => {
-  api.setUserInfo(inputValues['profile-name'], inputValues['profile-occupation'])
-    .then((userInfoServer) =>{
-      userInfo.setUserInfo(userInfoServer.name, userInfoServer.about);
-      popupProfile.close();
-      }
-    )
+  userInfo.setUserInfo(
+    inputValues['profile-name'],
+    inputValues['profile-occupation']
+  );
+  popupProfile.close();
 }
 
 const popupProfile = new PopupWithForm (
@@ -76,8 +63,6 @@ popupAddPlace.setEventListeners();
 //===================================================================
 
 
-
-
 //-----------------init Cards------------------------
 const handleCardClick = (placeData) => {
   imagePopup.open({
@@ -86,16 +71,11 @@ const handleCardClick = (placeData) => {
   });
 };
 
-
-let userId = null;
-
 const createCard = (item) =>{
   const card = new Card(
     item,
     '.template-element',
-    handleCardClick,
-    userId,
-    api
+    handleCardClick
   );
   return card.generateCard();
 }
@@ -105,19 +85,14 @@ const placeSectionRenderer = (item) => {
   placeList.addItem (place);
 }
 
+const placeList = new Section (
+    { items: initialCards,
+      renderer: placeSectionRenderer
+    },
+    '.elements'
+  );
 
-const placeList = new Section (placeSectionRenderer, '.elements');
-
-
-api.getInitCardsAndUserInfo()
-  .then(([ receivedCards, userInfo ]) => {
-      userId = userInfo._id;
-      console.log(receivedCards);
-      placeList.renderItems(receivedCards);
-    }
-  )
-
-console.log((1===2));
+placeList.renderItems();
 //===================================================================
 
 //-----------------Interface Bttns Interaction-------------------------
@@ -161,45 +136,6 @@ enableValidationForms(validationConfig);
 
 
 
-// api.getHarryPotter()
-//   .then ((res) =>{
 
-//       // res.forEach((item) => {
-//       //   console.log(item.name);
-//       // });
-//       for (let i = 0; i < 30; i++) {
-//         console.log(res[i].name);
-//         console.log(res[i].image);
-//         api.setCard(res[i].name, res[i].image).catch(err => console.log(err));
-//       }
-//     }
-//   )
-//   .then({})
-//   .catch((err) =>{
-//       console.log(err);
-//     }
-//   );
 
-// api.setCard(
-//   'котик',
-//   'https://klike.net/uploads/posts/2018-10/1539499416_1.jpg'
-// )
-// .catch(err => console.log(err));
 
-// api.getCard()
-//   .then ((res) =>{
-//       res.cards.forEach((item) => {
-//         api.setCard(`${item.value} ${item.suit}`, item.image).catch(err => console.log(err));
-//       });
-//     }
-//   )
-//   .then({})
-//   .catch((err) =>{
-//       console.log(err);
-//     }
-//   );
-// api.setCard(
-//   'котик',
-//   'https://klike.net/uploads/posts/2018-10/1539499416_1.jpg'
-// )
-// .catch(err => console.log(err));
