@@ -77,6 +77,34 @@
     </div>
   </div>
 
+  <!-- Avatar popup -->
+  <div class="popup popup_type_avatar">
+    <div class="popup__container">
+      <h2 class="popup__title">Обновить аватар</h2>
+      <form class="popup__form" name="change-avatar" novalidate>
+          <input id="avatar" type="url" name="avatar-link" placeholder="Ссылка на аватар" class="popup__input popup__input_type_avatar" required>
+          <span class="popup__error popup__error_type_avatar"></span>
+        <button type="submit" class="popup__submit-btn">Сохранить</button>
+      </form>
+      <button class="popup__close" type="button"></button>
+    </div>
+  </div>
+
+<!-- =========================================================================== -->
+
+  <!-- Confirm popup -->
+  <div class="popup popup_type_confirm">
+    <div class="popup__container">
+      <h2 class="popup__title">Вы уверены?</h2>
+      <form class="popup__form" name="confirm" novalidate>
+        <button type="submit" class="popup__submit-btn">Да</button>
+      </form>
+      <button class="popup__close" type="button"></button>
+    </div>
+  </div>
+
+<!-- =========================================================================== -->
+
   <div class="popup popup_type_picture">
     <div class="popup__zooming">
       <img src="#" alt="#" class="popup__picture">

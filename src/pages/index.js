@@ -4,13 +4,15 @@ import { validationConfig,
          popupInputOccupation,
          profileEditBttn,
          placeAddBttn,
-         formValidators
+         formValidators,
+         avatar
         } from '../scripts/utils/constants.js';
 import { Section } from '../scripts/components/Section.js';
 import { UserInfo } from '../scripts/components/UserInfo.js';
 import { Card } from '../scripts/components/Card.js';
 import { PopupWithImage } from '../scripts/components/PopupWithImage.js';
 import { PopupWithForm } from '../scripts/components/PopupWithForm.js';
+import { PopupWithConfirmation } from '../scripts/components/PopupWithConfirmation.js';
 import { Api } from '../scripts/components/Api.js';
 import { FormValidator } from '../scripts/utils/FormValidator.js';
 //===================================================================
@@ -23,6 +25,19 @@ const api = new Api({
   }
 });
 
+let userId = null;
+
+const userInfo = new UserInfo ({
+  userNameSelector: '.profile__name',
+  userOccupationSelector:'.profile__occupation',
+  userAvatarSelector: '.profile__foto'
+}
+);
+api.getUserInfo()
+.then((userInfoServer)=>{
+  userInfo.setUserInfo(userInfoServer.name, userInfoServer.about);
+  userInfo.setAvatar(userInfoServer.avatar);
+});
 //-----------------Zooming Cards (Image Popup)------------------------
 
 const imagePopup = new PopupWithImage (
@@ -31,23 +46,30 @@ const imagePopup = new PopupWithImage (
 imagePopup.setEventListeners();
 //===================================================================
 
-//-----------------Profile-------------------------
-const userInfo = new UserInfo ({
-    userNameSelector: '.profile__name',
-    userOccupationSelector:'.profile__occupation'
-  }
+const handleConfirmPopup = (card)=>{
+  console.log(card);
+  api.deleteCard(card._cardId).then(()=>{card.deleteCard(); popupConfirm.close()})
+}
+
+const popupConfirm = new PopupWithConfirmation (
+  '.popup_type_confirm',
+  handleConfirmPopup
 );
-api.getUserInfo()
-  .then((userInfoServer)=>{
-    userInfo.setUserInfo(userInfoServer.name, userInfoServer.about);
-  });
+popupConfirm.setEventListeners();
+
+const handleCardDelete = (card) =>{
+  popupConfirm.open(card);
+}
+
+
+//-----------------Profile-------------------------
+
 
 
 const handleProfileSubmit = (inputValues) => {
   api.setUserInfo(inputValues['profile-name'], inputValues['profile-occupation'])
     .then((userInfoServer) =>{
       userInfo.setUserInfo(userInfoServer.name, userInfoServer.about);
-      popupProfile.close();
       }
     )
 }
@@ -59,12 +81,60 @@ const popupProfile = new PopupWithForm (
 popupProfile.setEventListeners();
 //===================================================================
 
+//-----------------Avatar-------------------------
+
+const handleAvatarSubmit = (inputValues) => {
+  api.setAvatar(inputValues['avatar-link'])
+  .then((res)=>{
+    console.log(res);
+      userInfo.setAvatar(res.avatar);
+    }
+  );
+}
+
+const popupAvatar = new PopupWithForm (
+  '.popup_type_avatar',
+  handleAvatarSubmit
+);
+popupAvatar.setEventListeners();
+//===================================================================
+
 //-----------------AddPlace-------------------------
-const handleAddPlaceSubmit = (inputValues) => {
-  placeSectionRenderer({
-    name: inputValues['picture-caption'],
-    link: inputValues['picture-link']
-  });
+
+
+
+
+const createCard = (item) =>{
+  const card = new Card(
+    item,
+    '.template-element',
+    handleCardClick,
+    userId,
+    api,
+    handleCardDelete
+  );
+
+  return card.generateCard();
+}
+
+const placeSectionRenderer = (item) => {
+  const place = createCard(item);
+  placeList.addItem (place);
+}
+
+const handleAddPlaceSubmit = (inputValues, popup) => {
+  popup.querySelector('.popup__submit-btn').textContent = 'Сохранение...';
+  popup.querySelector('.popup__submit-btn').setAttribute('disabled','');
+  api.setCard(inputValues['picture-caption'], inputValues['picture-link'])
+    .then((newCard) => {
+          placeSectionRenderer(newCard);
+            popupAddPlace.close();
+            popup.addEventListener('transitionend', ()=>{
+              popup.querySelector('.popup__submit-btn').textContent = 'Сохранить';
+              popup.querySelector('.popup__submit-btn').removeAttribute('disabled','');
+            })
+      }
+    )
 }
 
 const popupAddPlace = new PopupWithForm (
@@ -76,8 +146,6 @@ popupAddPlace.setEventListeners();
 //===================================================================
 
 
-
-
 //-----------------init Cards------------------------
 const handleCardClick = (placeData) => {
   imagePopup.open({
@@ -86,38 +154,17 @@ const handleCardClick = (placeData) => {
   });
 };
 
-
-let userId = null;
-
-const createCard = (item) =>{
-  const card = new Card(
-    item,
-    '.template-element',
-    handleCardClick,
-    userId,
-    api
-  );
-  return card.generateCard();
-}
-
-const placeSectionRenderer = (item) => {
-  const place = createCard(item);
-  placeList.addItem (place);
-}
-
-
 const placeList = new Section (placeSectionRenderer, '.elements');
 
 
 api.getInitCardsAndUserInfo()
   .then(([ receivedCards, userInfo ]) => {
       userId = userInfo._id;
-      console.log(receivedCards);
       placeList.renderItems(receivedCards);
     }
   )
 
-console.log((1===2));
+
 //===================================================================
 
 //-----------------Interface Bttns Interaction-------------------------
@@ -139,6 +186,14 @@ placeAddBttn.addEventListener (
           formValidators['add-picture'].clearError();
           formValidators['add-picture'].disableSubmitBttn();
           popupAddPlace.open();
+        }
+
+);
+
+avatar.addEventListener (
+  'click',
+  () => {
+          popupAvatar.open();
         }
 
 );

@@ -41,3 +41,5 @@ export const popupInputOccupation = document.querySelector('.popup__input_type_o
 
 export const profileEditBttn = document.querySelector('.profile__edit');
 export const placeAddBttn = document.querySelector('.profile__add-place');
+
+export const avatar = document.querySelector('.profile__foto');

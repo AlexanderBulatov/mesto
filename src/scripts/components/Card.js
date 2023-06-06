@@ -1,16 +1,18 @@
 export class Card {
-  constructor(placeData, placeSelector, handleCardClick, userId, api) {
+  constructor(placeData, placeSelector, handleCardClick, userId, api, handleCardDelete) {
     this._placeSelector = placeSelector;
     this._placeData = placeData;
     this._name = placeData.name;
     this._link = placeData.link;
     this._handleCardClick = handleCardClick;
+    this._handleCardDelete = handleCardDelete;
     this._userId = userId;
     this._ownerId = placeData.owner._id;
     this._likesInfo = placeData.likes;
     //this._likeCounter = this._likesInfo.length;
     this._api = api;
     this._cardId = this._placeData._id;
+
 
   }
 
@@ -75,14 +77,17 @@ export class Card {
       this._api.deleteLike(this._cardId)
       .then ((cardInfo) =>{
         this._setRate(cardInfo.likes);
-        console.log(cardInfo.likes);
       })
     }
   };
 
-  _handleDelete() {
-    this._element.remove();
-  };
+    deleteCard (){
+      this._element.remove();
+    }
+
+    _handleDelete () {
+      this._handleCardDelete(this);
+    }
 
   _setEventListeners() {
     this._likeBttn.addEventListener('click', () => {this._handleLike()});

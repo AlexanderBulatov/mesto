@@ -21,7 +21,10 @@ _answerHandle(serverAnswer){
         }
       }
     )
-    .then(this._answerHandle);
+    .then(this._answerHandle)
+    .then((initialCardArray)=>{
+      return initialCardArray.reverse();
+    });
   }
 
   getUserInfo(){
@@ -76,53 +79,60 @@ _answerHandle(serverAnswer){
         }
       }
     )
-    .then(res => {
-        if (res.ok) {
-          return res.json();
-        }
-        return Promise.reject(`Error: ${res.status}`);
-      }
-    );
+    .then(this._answerHandle);
   }
 
 //---------------------
 
+  setCard(name, link){
+    return fetch(`${this._initUrlApi}/cards`,
+      {
+        method: 'POST',
+        headers: {
+          authorization: this._authorization,
+          'Content-Type': this._contentType
+        },
+        body: JSON.stringify({
+          name: name,
+          link: link
+          }
+        )
+      }
+    )
+    .then(this._answerHandle);
+  }
+
+  deleteCard(cardId){
+    return fetch(`${this._initUrlApi}/cards/${cardId}`, {
+        method: 'DELETE',
+        headers: {
+          authorization: this._authorization,
+          'Content-Type': this._contentType
+        }
+      }
+    )
+    .then(this._answerHandle);
+  }
 
 
+  setAvatar(link){
+    return fetch(`${this._initUrlApi}/users/me/avatar`,
+      {
+        method: 'PATCH',
+        headers: {
+          authorization: this._authorization,
+          'Content-Type': this._contentType
+        },
+        body: JSON.stringify({
+          avatar: link
+          }
+        )
+      }
+    )
+    .then(this._answerHandle);
+  }
 
 
-
-  // setCard(name, link){
-  //   return fetch(`${this._initUrlApi}/cards`,
-  //     {
-  //       method: 'POST',
-  //       headers: {
-  //         authorization: this._authorization,
-  //         'Content-Type': 'application/json'
-  //       },
-  //       body: JSON.stringify({
-  //         name: name,
-  //         link: link
-  //         }
-  //       )
-  //     }
-  //   )
-  //   .then(res => {
-  //       if (res.ok) {
-  //         return res.json();
-  //       }
-  //       return Promise.reject(`Error: ${res.status}`);
-  //     }
-  //   )
-  //   .then((res) =>{
-  //     console.log(res);
-  //     }
-  //   );
-  // }
-
-
-
-}
 //---- j 4 fun
 // getHarryPotter(){
 //   return fetch(`https://hp-api.onrender.com/api/characters`,
@@ -155,3 +165,4 @@ _answerHandle(serverAnswer){
 //     }
 //   )
 // }
+}
