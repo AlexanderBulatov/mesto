@@ -7,27 +7,26 @@ export class PopupWithConfirmation extends Popup {
     this._submitBttn = this._popup.querySelector('.popup__submit-btn');
   }
 
-  setEventListeners (){
+  setEventListeners() {
     super.setEventListeners();
+
     this._popupForm.addEventListener('submit', (e) => {
       e.preventDefault();
-      this._handleSubmitForm(this._card);
-    })
+
+      const initialText = this._submitBttn.textContent;
+
+      this._submitBttn.textContent = 'Удаление...';
+
+      this._handleSubmitForm(this._card)
+        .then(() => {this.close();})
+        .finally(() => {
+          this._submitBttn.textContent = initialText;
+        })
+    });
   }
 
-  freezeSubmitBttn(bttnCaption){
-    this._submitBttn.textContent = bttnCaption;
-    this._submitBttn.setAttribute('disabled','');
-  }
 
-  unfreezeSubmitBttn(bttnCaption){
-    this._popup.addEventListener('transitionend', (e)=>{
-     if(e.target.classList.contains(this._popupSelector.slice(1))){
-        this._submitBttn.textContent = bttnCaption;
-        this._submitBttn.removeAttribute('disabled','');
-     }
-    })
-  }
+
 
   open(card){
     super.open();

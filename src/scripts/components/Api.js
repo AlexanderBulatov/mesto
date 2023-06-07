@@ -53,11 +53,6 @@ _answerHandle(serverAnswer){
     .then(this._answerHandle);
   }
 
-
-  getInitCardsAndUserInfo() {
-    return Promise.all([this.getInitialCards(), this.getUserInfo()]);
-  }
-
   setLike(cardId){
     return fetch(`${this._initUrlApi}/cards/${cardId}/likes`, {
         method: 'PUT',

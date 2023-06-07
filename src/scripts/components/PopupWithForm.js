@@ -14,30 +14,27 @@ export class PopupWithForm extends Popup {
     return this._formValues;
   }
 
-  setEventListeners (){
+  setEventListeners() {
     super.setEventListeners();
+
     this._popupForm.addEventListener('submit', (e) => {
       e.preventDefault();
-      this._handleSubmitForm(this._getInputValues());
-    })
-  }
 
-  freezeSubmitBttn(bttnCaption){
-    this._submitBttn.textContent = bttnCaption;
-    this._submitBttn.setAttribute('disabled','');
-  }
+      const initialText = this._submitBttn.textContent;
 
-  unfreezeSubmitBttn(bttnCaption){
-    this._popup.addEventListener('transitionend', (e)=>{
-     if(e.target.classList.contains(this._popupSelector.slice(1))){
-        this._submitBttn.textContent = bttnCaption;
-        this._submitBttn.removeAttribute('disabled','');
-     }
-    })
+      this._submitBttn.textContent = 'Сохранение...';
+
+      this._handleSubmitForm(this._getInputValues())
+        .then(() => {this.close();})
+        .finally(() => {
+          this._submitBttn.textContent = initialText;
+        })
+    });
   }
 
   close(){
     super.close();
     this._popupForm.reset();
   }
+
 }

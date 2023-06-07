@@ -22,47 +22,36 @@ import { FormValidator } from '../scripts/utils/FormValidator.js';
 
 //----------------- Confirm Popup Handler ------------------------
 const handleConfirmPopup = (card)=>{
-  popupConfirm.freezeSubmitBttn('Удаление...');
-  api.deleteCard(card._cardId)
+  return api.deleteCard(card._cardId)
   .then(()=>{
       card.deleteCard();
-      popupConfirm.close();
-      popupConfirm.unfreezeSubmitBttn('Да');
     }
-  ).catch(handleError);
+  )
+  .catch(handleError);
 }
 //----------------- Profile Popup Handler ------------------------
 const handleProfileSubmit = (inputValues) => {
-  popupProfile.freezeSubmitBttn('Сохранение...');
-  api.setUserInfo(inputValues['profile-name'], inputValues['profile-occupation'])
-    .then((userInfoServer) =>{
-      userInfo.setUserInfo(userInfoServer.name, userInfoServer.about);
-      popupProfile.close();
-      popupProfile.unfreezeSubmitBttn('Сохранить');
-      }
-    )
-    .catch(handleError);
+  return api.setUserInfo(inputValues['profile-name'], inputValues['profile-occupation'])
+  .then((userInfoServer) =>{
+        userInfo.setUserInfo(userInfoServer.name, userInfoServer.about);
+    }
+  )
+  .catch(handleError);
 }
 //----------------- AddPlace Popup Handler ------------------------
 const handleAddPlaceSubmit = (inputValues) => {
-  popupAddPlace.freezeSubmitBttn('Сохранение...');
-  api.setCard(inputValues['picture-caption'], inputValues['picture-link'])
+  return api.setCard(inputValues['picture-caption'], inputValues['picture-link'])
     .then((newCard) => {
           placeSectionRenderer(newCard);
-          popupAddPlace.close();
-          popupAddPlace.unfreezeSubmitBttn('Создать');
       }
     )
     .catch(handleError);
 }
 //----------------- Avatar Popup Handler ------------------------
 const handleAvatarSubmit = (inputValues) => {
-  popupAvatar.freezeSubmitBttn('Сохранение...');
-  api.setAvatar(inputValues['avatar-link'])
+  return api.setAvatar(inputValues['avatar-link'])
   .then((res)=>{
       userInfo.setAvatar(res.avatar);
-      popupAvatar.close();
-      popupAvatar.unfreezeSubmitBttn('Создать');
     }
   )
   .catch(handleError);
@@ -160,13 +149,6 @@ const userInfo = new UserInfo ({
   }
 );
 
-api.getUserInfo()
-.then((userInfoServer)=>{
-    userInfo.setUserInfo(userInfoServer.name, userInfoServer.about);
-    userInfo.setAvatar(userInfoServer.avatar);
-  }
-).catch(handleError);
-
 const placeSectionRenderer = (item) => {
   const place = createCard(item);
   placeList.addItem (place);
@@ -176,13 +158,14 @@ const placeList = new Section (placeSectionRenderer, '.elements');
 
 let userId = null;
 
-api.getInitCardsAndUserInfo()
-  .then(([ receivedCards, userInfo ]) => {
-      userId = userInfo._id;
-      placeList.renderItems(receivedCards);
-    }
-  ).catch(handleError);
-
+Promise.all([api.getUserInfo(), api.getInitialCards()])
+  .then (([userData, cards])=>{
+    userId = userData._id;
+    userInfo.setUserInfo(userData.name, userData.about);
+    userInfo.setAvatar(userData.avatar);
+    placeList.renderItems(cards);
+  })
+  .catch(handleError);
 
 
 //-----------------Interface Bttns Interaction-------------------------
@@ -213,7 +196,6 @@ avatar.addEventListener (
   () => {
           userInfo.getAvatarLink();
           popupInputAvatar.value = userInfo.getAvatarLink();
-          console.log(userInfo.getAvatarLink());
           formValidators['change-avatar'].clearError();
           formValidators['change-avatar'].enableSubmitBttn();
           popupAvatar.open();
