@@ -1,19 +1,22 @@
 export class Card {
-  constructor(placeData, placeSelector, handleCardClick, userId, api, handleCardDelete) {
-    this._placeSelector = placeSelector;
-    this._placeData = placeData;
-    this._name = placeData.name;
-    this._link = placeData.link;
-    this._handleCardClick = handleCardClick;
-    this._handleCardDelete = handleCardDelete;
-    this._userId = userId;
-    this._ownerId = placeData.owner._id;
-    this._likesInfo = placeData.likes;
-    //this._likeCounter = this._likesInfo.length;
-    this._api = api;
-    this._cardId = this._placeData._id;
-
-
+  constructor(
+    placeData,
+    placeSelector,
+    userId,
+    handleCardClick,
+    handleCardLike,
+    handleCardDelete) {
+      this._placeData = placeData;
+      this._name = placeData.name;
+      this._link = placeData.link;
+      this._userId = userId;
+      this._placeSelector = placeSelector;
+      this._handleCardClick = handleCardClick;
+      this._handleCardDelete = handleCardDelete;
+      this._handleCardLike = handleCardLike;
+      this._ownerId = placeData.owner._id;
+      this._likesInfo = placeData.likes;
+      this._cardId = this._placeData._id;
   }
 
   _isUsersCard(){
@@ -29,7 +32,7 @@ export class Card {
     this._likeBttn.classList.remove('element__like_active');
   }
 
-  _setRate (likesInfo){
+  setRate (likesInfo){
     if (likesInfo.some((like) => {return (like._id===this._userId)})){
       if (!this._isLiked()){
         this._setLike();
@@ -57,7 +60,7 @@ export class Card {
     if (!this._isUsersCard()){
       this._deleteBttn.classList.add('element__delete_hidden');
     }
-    this._setRate (this._likesInfo);
+    this.setRate (this._likesInfo);
     this._picture = this._element.querySelector('.element__foto');
     this._element.querySelector('.element__name').textContent = this._name;
     this._picture.src = this._link;
@@ -67,18 +70,7 @@ export class Card {
   }
 
   _handleLike() {
-    if (!this._isLiked()){
-      this._api.setLike(this._cardId)
-      .then ((cardInfo) =>{
-        this._setRate(cardInfo.likes);
-      })
-    }
-    else {
-      this._api.deleteLike(this._cardId)
-      .then ((cardInfo) =>{
-        this._setRate(cardInfo.likes);
-      })
-    }
+    this._handleCardLike(this._isLiked(), this._cardId, this);
   };
 
     deleteCard (){

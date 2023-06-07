@@ -5,6 +5,7 @@ export class PopupWithForm extends Popup {
     this._handleSubmitForm = handleSubmitForm;
     this._popupForm = this._popup.querySelector('.popup__form');
     this._inputList = this._popup.querySelectorAll('.popup__input');
+    this._submitBttn = this._popup.querySelector('.popup__submit-btn');
   }
 
   _getInputValues(){
@@ -17,9 +18,23 @@ export class PopupWithForm extends Popup {
     super.setEventListeners();
     this._popupForm.addEventListener('submit', (e) => {
       e.preventDefault();
-      this._handleSubmitForm(this._getInputValues(), this._popup);
+      this._handleSubmitForm(this._getInputValues());
     })
-}
+  }
+
+  freezeSubmitBttn(bttnCaption){
+    this._submitBttn.textContent = bttnCaption;
+    this._submitBttn.setAttribute('disabled','');
+  }
+
+  unfreezeSubmitBttn(bttnCaption){
+    this._popup.addEventListener('transitionend', (e)=>{
+     if(e.target.classList.contains(this._popupSelector.slice(1))){
+        this._submitBttn.textContent = bttnCaption;
+        this._submitBttn.removeAttribute('disabled','');
+     }
+    })
+  }
 
   close(){
     super.close();

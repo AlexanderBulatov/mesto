@@ -133,7 +133,7 @@ _answerHandle(serverAnswer){
   }
 
 
-//---- j 4 fun
+//---- for testing API
 // getHarryPotter(){
 //   return fetch(`https://hp-api.onrender.com/api/characters`,
 //     {
@@ -150,19 +150,4 @@ _answerHandle(serverAnswer){
 //   )
 // }
 
-// getCard(){
-//   return fetch(`https://deckofcardsapi.com/api/deck/new/draw/?count=30`,
-//     {
-//       headers: {
-//       }
-//     }
-//   )
-//   .then(res => {
-//       if (res.ok) {
-//         return res.json();
-//       }
-//       return Promise.reject(`Error: ${res.status}`);
-//     }
-//   )
-// }
 }

@@ -5,24 +5,16 @@ export class UserInfo {
     this._avatar =  document.querySelector(userAvatarSelector)
   }
 
-  // getUserInfo(){
-  //   this._api.getUserInfo()
-  //   .then((responseUserInfo) => {
-  //         const userInfo = {
-  //         name: responseUserInfo.name,
-  //         occupation: responseUserInfo.about
-  //       }
-  //       console.log(userInfo);
-  //       return userInfo;
-  //     }
-  //   );
-  // }
   getUserInfo(){
     const userInfo = {
       name: this._profileName.textContent,
       occupation: this._profileOccupation.textContent
     };
     return userInfo;
+  }
+
+  getAvatarLink(){
+    return this._avatar.src;
   }
 
   setUserInfo(name, occupation){

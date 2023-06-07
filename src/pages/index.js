@@ -2,6 +2,7 @@ import '../pages/index.css';
 import { validationConfig,
          popupInputName,
          popupInputOccupation,
+         popupInputAvatar,
          profileEditBttn,
          placeAddBttn,
          formValidators,
@@ -17,6 +18,130 @@ import { Api } from '../scripts/components/Api.js';
 import { FormValidator } from '../scripts/utils/FormValidator.js';
 //===================================================================
 
+//----------------- Handlers for Popup Constructor ------------------------
+
+//----------------- Confirm Popup Handler ------------------------
+const handleConfirmPopup = (card)=>{
+  popupConfirm.freezeSubmitBttn('Удаление...');
+  api.deleteCard(card._cardId)
+  .then(()=>{
+      card.deleteCard();
+      popupConfirm.close();
+      popupConfirm.unfreezeSubmitBttn('Да');
+    }
+  ).catch(handleError);
+}
+//----------------- Profile Popup Handler ------------------------
+const handleProfileSubmit = (inputValues) => {
+  popupProfile.freezeSubmitBttn('Сохранение...');
+  api.setUserInfo(inputValues['profile-name'], inputValues['profile-occupation'])
+    .then((userInfoServer) =>{
+      userInfo.setUserInfo(userInfoServer.name, userInfoServer.about);
+      popupProfile.close();
+      popupProfile.unfreezeSubmitBttn('Сохранить');
+      }
+    )
+    .catch(handleError);
+}
+//----------------- AddPlace Popup Handler ------------------------
+const handleAddPlaceSubmit = (inputValues) => {
+  popupAddPlace.freezeSubmitBttn('Сохранение...');
+  api.setCard(inputValues['picture-caption'], inputValues['picture-link'])
+    .then((newCard) => {
+          placeSectionRenderer(newCard);
+          popupAddPlace.close();
+          popupAddPlace.unfreezeSubmitBttn('Создать');
+      }
+    )
+    .catch(handleError);
+}
+//----------------- Avatar Popup Handler ------------------------
+const handleAvatarSubmit = (inputValues) => {
+  popupAvatar.freezeSubmitBttn('Сохранение...');
+  api.setAvatar(inputValues['avatar-link'])
+  .then((res)=>{
+      userInfo.setAvatar(res.avatar);
+      popupAvatar.close();
+      popupAvatar.unfreezeSubmitBttn('Создать');
+    }
+  )
+  .catch(handleError);
+}
+
+//----------------- Popups init ------------------------
+//----------------- Zoom Popup ------------------------
+const imagePopup = new PopupWithImage (
+  '.popup_type_picture'
+);
+imagePopup.setEventListeners();
+//----------------- Confirm Card Delete Popup ------------------------
+const popupConfirm = new PopupWithConfirmation (
+  '.popup_type_confirm',
+  handleConfirmPopup
+);
+popupConfirm.setEventListeners();
+//----------------- Profile Popup ------------------------
+const popupProfile = new PopupWithForm (
+  '.popup_type_profile',
+  handleProfileSubmit
+);
+popupProfile.setEventListeners();
+//----------------- AddPlace Popup ------------------------
+const popupAddPlace = new PopupWithForm (
+  '.popup_type_add-picture',
+  handleAddPlaceSubmit
+);
+popupAddPlace.setEventListeners();
+//----------------- Avatar Popup ------------------------
+const popupAvatar = new PopupWithForm (
+  '.popup_type_avatar',
+  handleAvatarSubmit
+);
+popupAvatar.setEventListeners();
+
+//----------------- Handlers for Card Constructor ------------------------
+//----------------- Click Handler ------------------------
+const handleCardClick = (placeData) => {
+  imagePopup.open({
+    name: placeData.name,
+    link: placeData.link
+  });
+}
+//----------------- Like Handler ------------------------
+const handleCardLike = (isLiked, cardId, card) => {
+  if (!isLiked){
+    api.setLike(cardId)
+    .then ((cardInfo) =>{
+      card.setRate(cardInfo.likes);
+    })
+    .catch(handleError);
+  }
+  else {
+    api.deleteLike(cardId)
+    .then ((cardInfo) =>{
+      card.setRate(cardInfo.likes);
+    })
+    .catch(handleError);
+  }
+}
+//----------------- Delete Handler ------------------------
+const handleCardDelete = (card) =>{
+  popupConfirm.open(card);
+}
+
+const createCard = (item) =>{
+  const card = new Card(
+    item,
+    '.template-element',
+    userId,
+    handleCardClick,
+    handleCardLike,
+    handleCardDelete
+  );
+  return card.generateCard();
+}
+
+//-----------------Page init-------------------------
 const api = new Api({
   initUrlApi: 'https://mesto.nomoreparties.co/v1/cohort-68',
   headers: {
@@ -24,148 +149,41 @@ const api = new Api({
     'Content-Type': 'application/json'
   }
 });
-
-let userId = null;
+const handleError = (err) => {
+  console.log(err);
+}
 
 const userInfo = new UserInfo ({
   userNameSelector: '.profile__name',
   userOccupationSelector:'.profile__occupation',
   userAvatarSelector: '.profile__foto'
-}
+  }
 );
+
 api.getUserInfo()
 .then((userInfoServer)=>{
-  userInfo.setUserInfo(userInfoServer.name, userInfoServer.about);
-  userInfo.setAvatar(userInfoServer.avatar);
-});
-//-----------------Zooming Cards (Image Popup)------------------------
-
-const imagePopup = new PopupWithImage (
-  '.popup_type_picture'
-);
-imagePopup.setEventListeners();
-//===================================================================
-
-const handleConfirmPopup = (card)=>{
-  console.log(card);
-  api.deleteCard(card._cardId).then(()=>{card.deleteCard(); popupConfirm.close()})
-}
-
-const popupConfirm = new PopupWithConfirmation (
-  '.popup_type_confirm',
-  handleConfirmPopup
-);
-popupConfirm.setEventListeners();
-
-const handleCardDelete = (card) =>{
-  popupConfirm.open(card);
-}
-
-
-//-----------------Profile-------------------------
-
-
-
-const handleProfileSubmit = (inputValues) => {
-  api.setUserInfo(inputValues['profile-name'], inputValues['profile-occupation'])
-    .then((userInfoServer) =>{
-      userInfo.setUserInfo(userInfoServer.name, userInfoServer.about);
-      }
-    )
-}
-
-const popupProfile = new PopupWithForm (
-  '.popup_type_profile',
-  handleProfileSubmit
-);
-popupProfile.setEventListeners();
-//===================================================================
-
-//-----------------Avatar-------------------------
-
-const handleAvatarSubmit = (inputValues) => {
-  api.setAvatar(inputValues['avatar-link'])
-  .then((res)=>{
-    console.log(res);
-      userInfo.setAvatar(res.avatar);
-    }
-  );
-}
-
-const popupAvatar = new PopupWithForm (
-  '.popup_type_avatar',
-  handleAvatarSubmit
-);
-popupAvatar.setEventListeners();
-//===================================================================
-
-//-----------------AddPlace-------------------------
-
-
-
-
-const createCard = (item) =>{
-  const card = new Card(
-    item,
-    '.template-element',
-    handleCardClick,
-    userId,
-    api,
-    handleCardDelete
-  );
-
-  return card.generateCard();
-}
+    userInfo.setUserInfo(userInfoServer.name, userInfoServer.about);
+    userInfo.setAvatar(userInfoServer.avatar);
+  }
+).catch(handleError);
 
 const placeSectionRenderer = (item) => {
   const place = createCard(item);
   placeList.addItem (place);
 }
 
-const handleAddPlaceSubmit = (inputValues, popup) => {
-  popup.querySelector('.popup__submit-btn').textContent = 'Сохранение...';
-  popup.querySelector('.popup__submit-btn').setAttribute('disabled','');
-  api.setCard(inputValues['picture-caption'], inputValues['picture-link'])
-    .then((newCard) => {
-          placeSectionRenderer(newCard);
-            popupAddPlace.close();
-            popup.addEventListener('transitionend', ()=>{
-              popup.querySelector('.popup__submit-btn').textContent = 'Сохранить';
-              popup.querySelector('.popup__submit-btn').removeAttribute('disabled','');
-            })
-      }
-    )
-}
-
-const popupAddPlace = new PopupWithForm (
-  '.popup_type_add-picture',
-  handleAddPlaceSubmit
-);
-
-popupAddPlace.setEventListeners();
-//===================================================================
-
-
-//-----------------init Cards------------------------
-const handleCardClick = (placeData) => {
-  imagePopup.open({
-    name: placeData.name,
-    link: placeData.link
-  });
-};
-
 const placeList = new Section (placeSectionRenderer, '.elements');
 
+let userId = null;
 
 api.getInitCardsAndUserInfo()
   .then(([ receivedCards, userInfo ]) => {
       userId = userInfo._id;
       placeList.renderItems(receivedCards);
     }
-  )
+  ).catch(handleError);
 
 
-//===================================================================
 
 //-----------------Interface Bttns Interaction-------------------------
 profileEditBttn.addEventListener (
@@ -174,9 +192,9 @@ profileEditBttn.addEventListener (
           const { name, occupation } = userInfo.getUserInfo();
           popupInputName.value = name;
           popupInputOccupation.value = occupation;
-          popupProfile.open();
           formValidators['profile-edit'].clearError();
           formValidators['profile-edit'].enableSubmitBttn();
+          popupProfile.open();
         }
 );
 
@@ -193,12 +211,16 @@ placeAddBttn.addEventListener (
 avatar.addEventListener (
   'click',
   () => {
+          userInfo.getAvatarLink();
+          popupInputAvatar.value = userInfo.getAvatarLink();
+          console.log(userInfo.getAvatarLink());
+          formValidators['change-avatar'].clearError();
+          formValidators['change-avatar'].enableSubmitBttn();
           popupAvatar.open();
         }
 
 );
 //===========================================================================
-
 
 //-----------------Validation form On-------------------------
 const enableValidationForms = (config) => {
@@ -214,47 +236,14 @@ const enableValidationForms = (config) => {
 enableValidationForms(validationConfig);
 //=====================================================================
 
-
-
-// api.getHarryPotter()
-//   .then ((res) =>{
-
-//       // res.forEach((item) => {
-//       //   console.log(item.name);
-//       // });
-//       for (let i = 0; i < 30; i++) {
-//         console.log(res[i].name);
-//         console.log(res[i].image);
-//         api.setCard(res[i].name, res[i].image).catch(err => console.log(err));
-//       }
+//---------------------- just for server tests------------------
+// document.querySelector('.header__logo').addEventListener('dblclick', ()=>{
+//   api.getHarryPotter()
+//   .then((res) =>{
+//     for (let i = 0; i < 30; i++) {
+//       console.log(res[i].name);
+//       console.log(res[i].image);
+//       api.setCard(res[i].name, res[i].image).catch(err => console.log(err));
 //     }
-//   )
-//   .then({})
-//   .catch((err) =>{
-//       console.log(err);
-//     }
-//   );
-
-// api.setCard(
-//   'котик',
-//   'https://klike.net/uploads/posts/2018-10/1539499416_1.jpg'
-// )
-// .catch(err => console.log(err));
-
-// api.getCard()
-//   .then ((res) =>{
-//       res.cards.forEach((item) => {
-//         api.setCard(`${item.value} ${item.suit}`, item.image).catch(err => console.log(err));
-//       });
-//     }
-//   )
-//   .then({})
-//   .catch((err) =>{
-//       console.log(err);
-//     }
-//   );
-// api.setCard(
-//   'котик',
-//   'https://klike.net/uploads/posts/2018-10/1539499416_1.jpg'
-// )
-// .catch(err => console.log(err));
+//   });
+// });

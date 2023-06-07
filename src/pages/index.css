@@ -11,6 +11,7 @@
 /* page__main */
 @import url(../blocks/page/__main/page__main.css);
 @import url(../blocks/profile/profile.css);
+@import url(../blocks/profile/__foto-wrapper/profile__foto-wrapper.css);
 @import url(../blocks/profile/__foto/profile__foto.css);
 @import url(../blocks/profile/__info/profile__info.css);
 @import url(../blocks/profile/__name/profile__name.css);
